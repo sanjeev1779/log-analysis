@@ -1,0 +1,7 @@
+<configuration>
+    <appender name="map" class="com.sanjeev1779.log.analysis.appenders.KafkaBasedAppender"/>
+
+    <root level="info">
+        <appender-ref ref="map"/>
+    </root>
+</configuration>
