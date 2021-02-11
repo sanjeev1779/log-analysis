@@ -1,7 +1,11 @@
 <configuration>
-    <appender name="map" class="com.sanjeev1779.log.analysis.appenders.KafkaBasedAppender"/>
+
+    <appender name="kafka-appender" class="com.sanjeev1779.log.analysis.appenders.KafkaBasedAppender"/>
+
+    <loggerName name="org.apache.kafka" level = "off"/>
 
     <root level="info">
-        <appender-ref ref="map"/>
+        <appender-ref ref="kafka-appender" />
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
