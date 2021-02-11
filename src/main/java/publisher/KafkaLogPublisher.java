@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 public class KafkaLogPublisher implements LogPublisher {
 ////    private final Producer<String, String> producer;
-    private final String kafkaLogTopic = "log_analyzer6";
+    private final String kafkaLogTopic = "log_analyzer";
 //
 //    public KafkaLogPublisher() {
 ////        producer = new KafkaProducer<>(getProducerConfig());
