@@ -1,24 +1,19 @@
 package com.sanjeev1779.log.analysis.log.collector.publisher;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sanjeev1779.log.analysis.common.dtos.LogMessageDto;
+import com.sanjeev1779.log.analysis.common.utils.SerializationUtil;
 import org.apache.kafka.clients.producer.*;
 
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_BEANS;
-
 public class KafkaLogPublisher implements LogPublisher {
     private static final String kafkaLogTopic = "log_analyzer";
     private static Producer<String, String> producer;
     private static KafkaLogPublisher kafkaLogPublisher;
     private final ExecutorService executor = Executors.newFixedThreadPool(1);
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .configure(FAIL_ON_EMPTY_BEANS, false);
 
     private KafkaLogPublisher() {
     }
@@ -47,14 +42,14 @@ public class KafkaLogPublisher implements LogPublisher {
         return props;
     }
 
-    public void start() {
+    public synchronized void start() {
         if (producer != null) {
             return;
         }
         producer = new KafkaProducer<>(getProducerConfig());
     }
 
-    public void stop() {
+    public synchronized void stop() {
         if (producer == null) {
             return;
         }
@@ -85,11 +80,11 @@ public class KafkaLogPublisher implements LogPublisher {
         return true;
     }
 
-    public boolean publishMsg(LogMessageDto logMessage) throws JsonProcessingException {
+    public boolean publishMsg(LogMessageDto logMessage) {
         if (producer == null) {
             return false;
         }
-        String kafkaMsg = objectMapper.writeValueAsString(logMessage);
+        String kafkaMsg = SerializationUtil.writeString(logMessage);
         final ProducerRecord<String, String> record = new ProducerRecord<>(kafkaLogTopic, kafkaMsg);
         producer.send(record, new AsyncKafkaRecordPublishCallback());
         return true;
