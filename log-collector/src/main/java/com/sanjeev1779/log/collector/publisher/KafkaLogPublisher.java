@@ -1,4 +1,4 @@
-package publisher;
+package com.sanjeev1779.log.collector.publisher;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import org.apache.kafka.clients.producer.*;

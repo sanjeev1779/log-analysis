@@ -1,8 +1,8 @@
-package com.sanjeev1779.log.analysis.appenders;
+package com.sanjeev1779.log.collector.appenders;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
-import publisher.KafkaLogPublisher;
+import com.sanjeev1779.log.collector.publisher.KafkaLogPublisher;
 
 public class KafkaBasedAppender extends AppenderBase<ILoggingEvent> {
 
