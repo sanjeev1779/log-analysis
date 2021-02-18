@@ -1,4 +1,4 @@
-package com.sanjeev1779.log.collector.publisher;
+package com.sanjeev1779.log.analysis.log.collector.publisher;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 

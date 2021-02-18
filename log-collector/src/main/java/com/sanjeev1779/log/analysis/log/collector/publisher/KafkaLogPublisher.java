@@ -1,17 +1,24 @@
-package com.sanjeev1779.log.collector.publisher;
+package com.sanjeev1779.log.analysis.log.collector.publisher;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sanjeev1779.log.analysis.common.dtos.LogMessageDto;
 import org.apache.kafka.clients.producer.*;
 
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_BEANS;
+
 public class KafkaLogPublisher implements LogPublisher {
     private static final String kafkaLogTopic = "log_analyzer";
     private static Producer<String, String> producer;
     private static KafkaLogPublisher kafkaLogPublisher;
     private final ExecutorService executor = Executors.newFixedThreadPool(1);
+    private final ObjectMapper objectMapper = new ObjectMapper()
+            .configure(FAIL_ON_EMPTY_BEANS, false);
 
     private KafkaLogPublisher() {
     }
@@ -60,29 +67,31 @@ public class KafkaLogPublisher implements LogPublisher {
 
     @Override
     public boolean publish(ILoggingEvent loggingEvent) {
-        try {
-            return publishMsg(loggingEvent.getClass().getName(), loggingEvent.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean publishMsg(String key, String msg) {
-        if (producer == null) {
-            return false;
-        }
-        final ProducerRecord<String, String> record =
-                new ProducerRecord<>(kafkaLogTopic, key,
-                        msg);
-        Runnable runnable = () -> {
+        Runnable runnable = (() -> {
             try {
-                producer.send(record, new AsyncKafkaRecordPublishCallback()).get();
+                LogMessageDto logMessage = new LogMessageDto();
+                logMessage.setClassName(loggingEvent.getLoggerName());
+                logMessage.setTimestamp(loggingEvent.getTimeStamp());
+                logMessage.setLogLevel(loggingEvent.getLevel().levelStr);
+                logMessage.setMessage(loggingEvent.getMessage());
+
+                publishMsg(logMessage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        };
+        });
+
         executor.execute(runnable);
+        return true;
+    }
+
+    public boolean publishMsg(LogMessageDto logMessage) throws JsonProcessingException {
+        if (producer == null) {
+            return false;
+        }
+        String kafkaMsg = objectMapper.writeValueAsString(logMessage);
+        final ProducerRecord<String, String> record = new ProducerRecord<>(kafkaLogTopic, kafkaMsg);
+        producer.send(record, new AsyncKafkaRecordPublishCallback());
         return true;
     }
 
@@ -92,10 +101,6 @@ public class KafkaLogPublisher implements LogPublisher {
         public void onCompletion(RecordMetadata recordMetadata, Exception e) {
             if (e != null) {
                 e.printStackTrace();
-            } else {
-                System.out.printf("meta(topic=%s partition=%d, offset=%d)\n",
-                        recordMetadata.topic(), recordMetadata.partition(),
-                        recordMetadata.offset());
             }
         }
     }

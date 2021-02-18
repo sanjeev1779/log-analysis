@@ -1,6 +1,6 @@
 <configuration>
 
-    <appender name="kafka-appender" class="com.sanjeev1779.log.collector.appenders.KafkaBasedAppender"/>
+    <appender name="kafka-appender" class="com.sanjeev1779.log.analysis.log.collector.appenders.KafkaBasedAppender"/>
     <loggerName name="org.apache.kafka" level = "off"/>
 
     <root level="error">

@@ -1,6 +1,6 @@
-package com.sanjeev1779.log.collector;
+package com.sanjeev1779.log.analysis.log.collector;
 
-import com.sanjeev1779.log.collector.publisher.KafkaLogPublisher;
+import com.sanjeev1779.log.analysis.log.collector.publisher.KafkaLogPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
