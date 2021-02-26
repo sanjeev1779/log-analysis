@@ -7,7 +7,7 @@
     <parent>
         <artifactId>log-analysis</artifactId>
         <groupId>com.sanjeev1779.log.analysis</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.0.2</version>
     </parent>
 
     <artifactId>common</artifactId>

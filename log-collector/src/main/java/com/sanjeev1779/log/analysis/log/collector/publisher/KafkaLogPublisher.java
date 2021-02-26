@@ -29,10 +29,7 @@ public class KafkaLogPublisher implements LogPublisher {
     }
 
     private Properties getProducerConfig() {
-        String broker = System.getProperty("kafka.brokers");
-        if (broker == null || broker.isEmpty()) {
-            broker = "localhost:9092";
-        }
+        String broker = System.getenv().getOrDefault("KAFKA", "localhost:9092");
         Properties props = new Properties();
         props.put("bootstrap.servers", broker);
         props.put("acks", "1");
