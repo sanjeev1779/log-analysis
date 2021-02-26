@@ -10,9 +10,9 @@
   <version>1.0-SNAPSHOT</version>
 
   <modules>
-      <module>common</module>
       <module>log-collector</module>
       <module>log-transformer</module>
+      <module>common</module>
   </modules>
 
   <name>log-analysis</name>
@@ -80,4 +80,13 @@
       </plugin>
     </plugins>
   </build>
+
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>Github package for log analysis</name>
+      <url>https://maven.pkg.github.com/sanjeev1779/log-analysis</url>
+    </repository>
+  </distributionManagement>
+
 </project>
