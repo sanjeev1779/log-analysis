@@ -16,6 +16,7 @@ public class KafkaLogPublisher implements LogPublisher {
     private final ExecutorService executor = Executors.newFixedThreadPool(1);
 
     private KafkaLogPublisher() {
+        start();
     }
 
     public static KafkaLogPublisher getInstance() {
@@ -42,7 +43,7 @@ public class KafkaLogPublisher implements LogPublisher {
         return props;
     }
 
-    public synchronized void start() {
+    private synchronized void start() {
         if (producer != null) {
             return;
         }

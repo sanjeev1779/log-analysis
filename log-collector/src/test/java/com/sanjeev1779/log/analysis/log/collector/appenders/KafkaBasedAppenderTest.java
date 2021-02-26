@@ -1,6 +1,5 @@
 package com.sanjeev1779.log.analysis.log.collector.appenders;
 
-import com.sanjeev1779.log.analysis.log.collector.publisher.KafkaLogPublisher;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,6 @@ public class KafkaBasedAppenderTest {
 
     @Test
     public void testLog() {
-        KafkaLogPublisher.getInstance().start();
         logger.error("hiiiii");
     }
 }
