@@ -5,6 +5,12 @@ public class LogMessageDto {
     private long timestamp;
     private String logLevel;
     private Object message;
+    private Object[] getArgumentArray;
+    private String getFormattedMessage;
+
+    public Object[] getGetArgumentArray() {
+        return getArgumentArray;
+    }
 
     public String getClassName() {
         return className;
@@ -36,5 +42,17 @@ public class LogMessageDto {
 
     public void setMessage(Object message) {
         this.message = message;
+    }
+
+    public void setGetArgumentArray(Object[] getArgumentArray) {
+        this.getArgumentArray = getArgumentArray;
+    }
+
+    public String getGetFormattedMessage() {
+        return getFormattedMessage;
+    }
+
+    public void setGetFormattedMessage(String getFormattedMessage) {
+        this.getFormattedMessage = getFormattedMessage;
     }
 }

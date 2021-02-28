@@ -1,0 +1,12 @@
+<configuration scan="true" debug="false">
+    <appender name="kafka-appender" class="com.sanjeev1779.log.analysis.log.collector.appenders.KafkaBasedAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <root level="ERROR">
+        <appender-ref ref="kafka-appender" />
+    </root>
+
+</configuration>

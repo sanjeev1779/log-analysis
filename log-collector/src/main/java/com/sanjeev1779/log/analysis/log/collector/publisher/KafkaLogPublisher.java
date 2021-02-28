@@ -71,6 +71,8 @@ public class KafkaLogPublisher implements LogPublisher {
                 logMessage.setTimestamp(loggingEvent.getTimeStamp());
                 logMessage.setLogLevel(loggingEvent.getLevel().levelStr);
                 logMessage.setMessage(loggingEvent.getMessage());
+                logMessage.setGetFormattedMessage(loggingEvent.getFormattedMessage());
+                logMessage.setGetArgumentArray(loggingEvent.getArgumentArray());
 
                 publishMsg(logMessage);
             } catch (Exception e) {
